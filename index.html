@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body style="background-color: cadetblue;">
+    <div class="container">
+        <div class="row" style="margin-top: 50px;">
+            <figure class="text-center">
+                <blockquote class="blockquote">
+                  <h3>QR Code Generator</h3>
+                </blockquote>
+              </figure>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <label for="qrText" class="form-label" style="font-weight: bold;padding: 0;">Enter QR Code text</label>
+                <textarea class="form-control" id="qrText" rows="5" placeholder="Enter QR Code text" onkeyup="enableGenButton()"></textarea>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <label for="qrSize" class="form-label" style="font-weight: bold;padding: 0;">QR Code Size</label>
+                <select id="qrSize" class="form-select" aria-label="QR Code size">
+                    <option value="50x50">50x50</option>
+                    <option value="100x100">100x100</option>
+                    <option value="150x150">150x150</option>
+                    <option value="300x300">300x300</option>
+                    <option selected="selected" value="500x500">500x500</option>
+                </select>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <button type="button" class="btn btn-primary" id="qrGenBtn" disabled="disabled" onclick="generateQrCode()">Generate QR Code</button>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <button type="button" class="btn btn-danger" id="pageResetBtn" onclick="resetQrSelection()">Reset</button>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" style="text-align: center; margin-top: 50px;">
+                <canvas id="qrImg" class="img-fluid"></canvas>
+            </div>
+        </div>
+      </div>
+      <div class="container" style="margin-top: 100px;position: relative;bottom: 0%; left: 0%; text-align: center;">
+        <footer>
+            <label class="form-label" style="text-align: center;">Developed by The Green Coder</label>
+        </footer>
+      </div>
+      
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script>
+        // enable/disable QR code generation button
+        let enableGenButton = function(){
+            const qrText = $("#qrText").val();
+            const qrBtn = $("#qrGenBtn");
+            if(qrText && qrText.trim().length && $("#qrSize").val()){
+                qrBtn.removeAttr("disabled");
+            } else {
+                qrBtn.attr("disabled", "disabled");
+            }
+            
+        };
+
+        // reset QR text and size selection
+        let resetQrSelection = function(){
+            $("#qrText").val("").trigger("keyup");
+            $("#qrSize").val("500x500").trigger("change");
+            const canvas = document.getElementById("qrImg");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // generate QR Code from google chart API and set on canvas (right click to save from canvas)
+        let generateQrCode = function() {
+            const imgSize = $("#qrSize").val();
+            const imgText = $("#qrText").val();
+            // add paramter chf=bg,s,65432100& for transparent background
+            const imgUrl = "https://chart.googleapis.com/chart?choe=UTF-8&cht=qr&chs="+imgSize+"&chl="+imgText;
+            const img = new Image()
+            img.setAttribute("crossOrigin", "anonymous");
+            img.onload = function() {
+                const canvas = document.getElementById("qrImg");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+                const dataURL = canvas.toDataURL("image/png");
+            };
+            img.src = imgUrl;
+        }
+        
+    </script>
+</body>
+</html>
