@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sL \"https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js\")",
+      "Bash(curl -sL \"https://unpkg.com/qrcode@1.5.3/\")",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/qrcode@1.5.3/+esm\")",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/qrcode@1.5.3/lib/browser.js\")",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js\")",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js\" -o d:/dev/GitHub/js-qr-code-generator/js/qrcode.min.js)"
+    ]
+  }
+}
